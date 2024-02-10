@@ -1,1 +1,1 @@
-web: gunicorn 'logistic.wsgi' --timeout 900
+web: web: python3 manage.py migrate && python3 manage.py runserver
