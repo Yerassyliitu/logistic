@@ -1,1 +1,1 @@
-web: gunicorn 'logistic.wsgi' --timeout 1200 --workers 3 --bind
+web: gunicorn 'logistic.wsgi' --timeout 1200 --workers 10 --bind
