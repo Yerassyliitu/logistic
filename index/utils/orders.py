@@ -25,15 +25,18 @@ def get_order_id_by_track_id(track_id):
     return None
 
 
-def replace_order_status(order_id, new_status_reference):
+async def replace_order_status(order_id, new_status_reference):
     order_ref = db.collection(order_collection_path).document(order_id)
 
     # Получаем текущий статус заказа
-    old_status_reference = order_ref.get().to_dict().get('status')
+    order_snapshot = await order_ref.get()
+    order_data = order_snapshot.to_dict()
+    old_status_reference = order_data.get('status')
+
     if old_status_reference == new_status_reference:
         return f"Order {order_id} already has status {new_status_reference.id}"
     # Обновляем статус заказа
-    order_ref.update({"status": new_status_reference})
+    await order_ref.update({"status": new_status_reference})
 
     # Добавляем запись в историю изменений статуса заказа
     history_data = {
@@ -42,6 +45,6 @@ def replace_order_status(order_id, new_status_reference):
         "datetime": datetime.now(),
         "order": order_ref
     }
-    db.collection(history_status_collection_path).add(history_data)
+    await db.collection(history_status_collection_path).add(history_data)
 
     return f"Order {order_id} status updated to {new_status_reference.id}"
