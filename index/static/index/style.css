@@ -1,0 +1,37 @@
+.main {
+    max-width: 450px;
+    margin: 2rem auto 0;
+}
+
+.uploadfile-form {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    gap: 1rem;
+}
+
+.uploadfile-form-title {
+    color: white;
+    font-size: 2.5rem;
+}
+
+.uploadfile-form-input {
+    padding: 0.5rem;
+}
+
+.uploadfile-form-btn {
+    color: white;
+    background-color: #6e0e1a;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+#loader {
+    position: fixed; /* Позиционируем элемент фиксированно относительно окна просмотра */
+    top: 50%; /* Положение относительно верхнего края окна */
+    left: 50%; /* Положение относительно левого края окна */
+    transform: translate(-50%, -50%); /* Центрируем элемент относительно его собственных размеров */
+    z-index: 9999; /* Перемещаем элемент вперед по оси Z */
+}

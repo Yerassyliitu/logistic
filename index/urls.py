@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 
 from index import views
 
-router = DefaultRouter()
-router.register(r'upload-excel', views.FileUploadViewSet, basename='upload_excel')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('', views.upload_file, name='upload_file'),
+]
