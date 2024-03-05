@@ -27,8 +27,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,8 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'index.apps.IndexConfig',
     'rest_framework',
-    'crispy_forms',
-    'crispy_bootstrap4',
 ]
 
 
