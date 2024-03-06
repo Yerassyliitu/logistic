@@ -11,7 +11,7 @@
 <body>
     <article class="main">
         <form class="uploadfile-form" method="post" enctype="multipart/form-data" style="color: #32CD32">
-            <h1 style="color: #32CD32; font-family: 'Inter', sans-serif;margin-bottom: 0px;">Hi-log</h1>
+            <h1 style="color: #32CD32; font-family: 'Inter', sans-serif;margin-bottom: 0px;">Hi-Log</h1>
             {% csrf_token %}
             {{ form.file }}
             <input name="{{ form.password.name }}" class="uploadfile-form-input" type="text", placeholder="Пароль">
