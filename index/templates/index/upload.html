@@ -9,72 +9,74 @@
 
 
 <body>
-    <article class="main">
-        <form class="uploadfile-form" method="post" enctype="multipart/form-data" style="color: #32CD32">
-            <h1 style="color: #32CD32; font-family: 'Inter', sans-serif;margin-bottom: 0px;">
-                <img src="{% static 'index/logo.jpeg' %}" style="width:30px; height:30px; vertical-align: middle;" alt="Logo" />
-                Hi-Log
-            </h1>
-            {% csrf_token %}
-            {{ form.file }}
-            <input name="{{ form.password.name }}" class="uploadfile-form-input" type="text", placeholder="Пароль">
-            {{ form.admin_status }}
-            <h5 class="form-elements" style="margin-top: 1px; margin-bottom: 1px;">Выберите колонку в которой записаны трек-коды</h5>
-            {{ form.field_choice }}
-            <button class="uploadfile-form-btn" style="background-color:#FF8C00" type="submit">Загрузить</button>
-        </form>
-        <!-- Модальное окно -->
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <div id="loader" style="display: none; position: absolute; top: 30%; left: 50%; z-index: 9999;">
-                    <img src="{% static 'index/loading.gif' %}" alt="Loading..." style="width: 50px; height: 50px;" />
-                </div>
+<article class="main">
+    <form class="uploadfile-form" method="post" enctype="multipart/form-data" style="color: #32CD32">
+        <h1 style="color: #32CD32; font-family: 'Inter', sans-serif;margin-bottom: 0px;">
+            <img src="{% static 'index/logo.jpeg' %}" style="width:30px; height:30px; vertical-align: middle;"
+                 alt="Logo"/>
+            Hi-Log
+        </h1>
+        {% csrf_token %}
+        {{ form.file }}
+        <input name="{{ form.password.name }}" class="uploadfile-form-input" type="text" , placeholder="Пароль">
+        {{ form.admin_status }}
+        <h5 class="form-elements" style="margin-top: 1px; margin-bottom: 1px;">Выберите колонку в которой записаны
+            трек-коды</h5>
+        {{ form.field_choice }}
+        <button class="uploadfile-form-btn" style="background-color:#FF8C00" type="submit">Загрузить</button>
+    </form>
+    <!-- Модальное окно -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="loader" style="display: none; position: absolute; top: 30%; left: 50%; z-index: 9999;">
+                <img src="{% static 'index/loading.gif' %}" alt="Loading..." style="width: 50px; height: 50px;"/>
             </div>
         </div>
-    </article>
-    <script>
-        function showLoader() {
-            // Показываем индикатор загрузки
-            var loader = document.getElementById('loader');
-            loader.style.display = 'block';
-        }
+    </div>
+</article>
+<script>
+    function showLoader() {
+        // Показываем индикатор загрузки
+        var loader = document.getElementById('loader');
+        loader.style.display = 'block';
+    }
 
-        function hideLoader() {
-            // Скрываем индикатор загрузки
-            var loader = document.getElementById('loader');
-            loader.style.display = 'none';
-        }
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.uploadfile-form').submit(function(event) {
-                event.preventDefault(); // Отменяем стандартное действие формы
-                showLoader(); // Показываем индикатор загрузки
-                var formData = new FormData($(this)[0]);
+    function hideLoader() {
+        // Скрываем индикатор загрузки
+        var loader = document.getElementById('loader');
+        loader.style.display = 'none';
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.uploadfile-form').submit(function (event) {
+            event.preventDefault();
+            showLoader();
+            var formData = new FormData($(this)[0]);
 
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "upload_file" %}',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $('#loader').hide(); // Скрываем индикатор загрузки
-                        if (response.success) {
-                            // Если загрузка прошла успешно, отображаем сообщение об успехе
-                            alert("Трек коды успешно изменены");
+            $.ajax({
+                type: 'POST',
+                url: '{% url "upload_file" %}',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $('#loader').hide();
+                    if (response.success) {
+                        if (!response.all_unchanged_tracks) {
+                            alert(response.message);
                         } else {
-                            // Показываем сообщение об ошибке в случае неудачи
-                            alert('Ошибка при загрузке файла: ' + response.error_message);
+                            alert(response.message + "\nНе найдено в базе: " + response.all_unchanged_tracks);
                         }
-                    },
-                });
+                    } else {
+                        alert('Ошибка при загрузке файла: ' + response.error_message);
+                    }
+                },
             });
         });
-    </script>
+    });
+</script>
 </body>
-
-
 
 </html>
