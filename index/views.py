@@ -21,7 +21,7 @@ def upload_file(request):
             if not excel_file.name.endswith('.xlsx'):
                 return render(request, 'index/upload.html', {'form': form,})
             try:
-                if password != 'HiLog789':
+                if password != '1234':
                     raise Exception('Неверный пароль')
                 print('c')
                 count = parse_from_excel_function(excel_file, admin_status, field_to_parse)
