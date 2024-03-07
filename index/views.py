@@ -25,7 +25,6 @@ def upload_file(request):
                     raise Exception('Неверный пароль')
                 print('c')
                 all_unchanged_tracks = parse_from_excel_function(excel_file, admin_status, field_to_parse)
-                all_unchanged_tracks
                 return JsonResponse({'success': True, 'message': 'Трек коды успешно изменены', 'all_unchanged_tracks': all_unchanged_tracks})
             except Exception as e:
                 print(e)
