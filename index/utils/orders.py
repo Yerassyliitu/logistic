@@ -15,9 +15,14 @@ def change_order_status(array, status_admin):
     filtered_array = []
     # Обновляем статусы в базе данных Firebase и в локальной структуре данных
     for track_id in array:
+        try:
+            track_id = int(track_id)
+        except:
+            track_id = str(track_id)
         track_id = str(track_id)
         if track_id in user_op_data_dict:
-            op_data = {"op_created": False, "op_stock": False, "op_otw": False, "op_kz": False, "op_received": False, "status_admin": status_admin}
+            print("FOUND TRACK ID", track_id)
+            op_data = {"op_check": False, "op_created": False, "op_stock": False, "op_otw": False, "op_kz": False, "op_received": False, "status_admin": status_admin}
             if status_admin == "На складе в Китае":
                 op_data["op_stock"] = True
             elif status_admin == "В пути":
@@ -27,7 +32,6 @@ def change_order_status(array, status_admin):
             else:
                 pass
             user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
-            print(track_id)
             del user_op_data_dict[track_id]
         else:
             filtered_array.append(track_id)
