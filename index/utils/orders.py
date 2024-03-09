@@ -17,7 +17,16 @@ def change_order_status(array, status_admin):
     for track_id in array:
         track_id = str(track_id)
         if track_id in user_op_data_dict:
-            user_op_data_dict[track_id]["user_op_doc_ref"].set({"status_admin": status_admin}, merge=True)
+            op_data = {"op_created": False, "op_stock": False, "op_otw": False, "op_kz": False, "op_received": False, "status_admin": status_admin}
+            if status_admin == "На складе в Китае":
+                op_data["op_stock"] = True
+            elif status_admin == "В пути":
+                op_data["op_otw"] = True
+            elif status_admin == "В пункте выдачи":
+                op_data["op_kz"] = True
+            else:
+                pass
+            user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
             print(track_id)
             del user_op_data_dict[track_id]
         else:
