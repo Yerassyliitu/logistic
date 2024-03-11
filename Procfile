@@ -1,1 +1,1 @@
-web: gunicorn 'logistic.wsgi' --debug
+web: gunicorn 'logistic.wsgi'
