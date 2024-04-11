@@ -29,6 +29,10 @@ def change_order_status(array, status_admin):
         if track_id in user_op_data_dict:
             print("FOUND TRACK ID", track_id)
             # Default op_data with status_admin update
+            user_op_doc_ref = user_op_data_dict[track_id]["user_op_doc_ref"]
+            user_op_doc = user_op_doc_ref.get()
+            user_op_data = user_op_doc.to_dict()
+            # print(user_op_data)
             op_data = {
                 "op_check": False,
                 "op_created": False,
@@ -37,26 +41,29 @@ def change_order_status(array, status_admin):
                 "op_kz": False,
                 "op_received": False,
                 "status_admin": status_admin,
-                "admin_note": user_op_data_dict[track_id].get("admin_note", ""),
-                # Set exactly_weight only if not already set, or modify this logic as needed
-                "exactly_weight": user_op_data_dict[track_id].get("exactly_weight", 0)
+                "exactly_weight":user_op_data.get("exactly_weight", 0)
             }
-
+            print(user_op_data.get('op_otw'))
             # Conditionally updating op_data based on status_admin
-            if status_admin == "На складе в Китае":
+            if status_admin == "На складе в Китае" and not user_op_data.get('op_otw') and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
                 op_data["op_stock"] = True
                 op_data["op_stock_time"] = datetime.now()
-            elif status_admin == "В пути":
+                user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
+                del user_op_data_dict[track_id]
+            elif status_admin == "В пути" and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
                 op_data["op_otw"] = True
                 op_data["op_otw_time"] = datetime.now()
-            elif status_admin == "В пункте выдачи":
+                user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
+                del user_op_data_dict[track_id]
+            elif status_admin == "В пункте выдачи" and not user_op_data.get('op_received'):
                 op_data["op_kz"] = True
                 op_data["op_kz_time"] = datetime.now()
+                user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
+                del user_op_data_dict[track_id]
             # Add any additional statuses or logic as needed
 
             # Update document in Firestore
-            user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
-            del user_op_data_dict[track_id]
+
         else:
             filtered_array.append(track_id)
 
