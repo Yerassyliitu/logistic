@@ -45,17 +45,17 @@ def change_order_status(array, status_admin):
             }
             print(user_op_data.get('op_otw'))
             # Conditionally updating op_data based on status_admin
-            if status_admin == "На складе в Китае" and not user_op_data.get('op_otw') and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
+            if status_admin == "На складе в Китае" and not user_op_data.get('op_stock') and not user_op_data.get('op_otw') and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
                 op_data["op_stock"] = True
                 op_data["op_stock_time"] = datetime.now()
                 user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
                 del user_op_data_dict[track_id]
-            elif status_admin == "В пути" and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
+            elif status_admin == "В пути" and not user_op_data.get('op_otw') and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
                 op_data["op_otw"] = True
                 op_data["op_otw_time"] = datetime.now()
                 user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
                 del user_op_data_dict[track_id]
-            elif status_admin == "В пункте выдачи" and not user_op_data.get('op_received'):
+            elif status_admin == "В пункте выдачи" and not user_op_data.get('op_kz') and not user_op_data.get('op_received'):
                 op_data["op_kz"] = True
                 op_data["op_kz_time"] = datetime.now()
                 user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
