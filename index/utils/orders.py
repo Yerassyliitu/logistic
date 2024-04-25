@@ -60,6 +60,7 @@ def change_order_status(array, status_admin):
                 op_data["op_kz_time"] = datetime.now()
                 user_op_data_dict[track_id]["user_op_doc_ref"].set(op_data, merge=True)
                 del user_op_data_dict[track_id]
+            print(op_data)
             # Add any additional statuses or logic as needed
 
             # Update document in Firestore
