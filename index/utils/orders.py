@@ -94,7 +94,7 @@ def change_order_status(array, status_admin, editor_Ref):
                     "count": 0,
                     'status_admin': 'На складе в Китае',
                     "name": '',
-
+                    "withoutUser": True,
                 }
                 user_ref = db.collection('users').document(user_doc_id).collection('users_op').document()
                 user_ref.set(new_op_data)
