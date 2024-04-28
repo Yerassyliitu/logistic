@@ -17,6 +17,8 @@ def upload_file(request):
             excel_file = request.FILES['file']
             password = request.POST['password']
             admin_status = request.POST['admin_status']
+            editor_Ref = request.POST['editor_Ref']
+            # editor_Ref = 'ZSpYhSQBxoOyOXtth89mVyN5whF2'
             field_to_parse = int(request.POST['field_choice'])
             if not excel_file.name.endswith('.xlsx'):
                 return render(request, 'index/upload.html', {'form': form,})
@@ -24,7 +26,7 @@ def upload_file(request):
                 if password != '1234':
                     raise Exception('Неверный пароль')
                 print('c')
-                all_unchanged_tracks = parse_from_excel_function(excel_file, admin_status, field_to_parse)
+                all_unchanged_tracks = parse_from_excel_function(excel_file, admin_status, field_to_parse, editor_Ref)
                 return JsonResponse({'success': True, 'message': 'Трек коды успешно изменены', 'all_unchanged_tracks': all_unchanged_tracks})
             except Exception as e:
                 print(e)
