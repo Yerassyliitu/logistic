@@ -21,7 +21,19 @@ def change_order_status(array, status_admin, editor_Ref):
                 }
             except:
                 continue
+    user_doc_id = None
+    company_op = None
+    try:
+        user_ref = db.collection("users").where("uid", "==", editor_Ref).get()
 
+        for doc in user_ref:
+            if doc.exists:
+                user_doc_id = doc.id
+                user_data = doc.to_dict()
+                company_op = user_data.get("company")
+                break
+    except:
+        print("User with editorRef not found")
 
     filtered_array = []
     # Update statuses in Firebase database and local data structure
@@ -31,23 +43,9 @@ def change_order_status(array, status_admin, editor_Ref):
         except ValueError:
             track_id = str(track_id)
         track_id = str(track_id)
-        user_ref = db.collection("users").where("uid", "==", editor_Ref).get()
-        print(user_ref)
-        user_doc_id = None
-        company_op = None
-
-        for doc in user_ref:
-            if doc.exists:
-                user_doc_id = doc.id
-                user_data = doc.to_dict()
-                company_op = user_data.get("company")
-                break
-        if not user_doc_id:
-            print("User with editorRef not found")
 
         # company_op = 'qlpZ3NiOIYiSMTDROmeV'
         if track_id in user_op_data_dict:
-            print("FOUND TRACK ID", track_id)
             user_op_doc_ref = user_op_data_dict[track_id]["user_op_doc_ref"]
             user_op_doc = user_op_doc_ref.get()
             user_op_data = user_op_doc.to_dict()
