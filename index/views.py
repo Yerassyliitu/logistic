@@ -17,7 +17,10 @@ def upload_file(request):
             excel_file = request.FILES['file']
             password = request.POST['password']
             admin_status = request.POST['admin_status']
-            editor_Ref = request.POST['editor_Ref']
+            try:
+                editor_Ref = request.POST['editor_Ref']
+            except:
+                editor_Ref = None
             # editor_Ref = 'ZSpYhSQBxoOyOXtth89mVyN5whF2'
             field_to_parse = int(request.POST['field_choice'])
             if not excel_file.name.endswith('.xlsx'):
