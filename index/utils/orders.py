@@ -87,7 +87,7 @@ def change_order_status(array, status_admin, editor_Ref):
                     "date_create": datetime.now(),
                     "op_created": False,
                     "op_stock": True,
-                    "op_stick_time": datetime.now(),
+                    "op_stock_time": datetime.now(),
                     "op_created_time": datetime.now(),
                     "count": 0,
                     'status_admin': 'На складе в Китае',
